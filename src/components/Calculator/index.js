@@ -34,20 +34,20 @@ function Calculator() {
       setCurrentValue(currentValue + val);
       currentNumber = parseInt(currentValue + val);
 
-      switch (true) {
-        case currentSign === "+":
+      switch (currentSign) {
+        case "+":
           setResult(result - currentValue + currentNumber);
           setPreviousValue(currentNumber);
           break;
-        case currentSign === "-":
+        case "-":
           setResult(result - currentValue - currentNumber);
           setPreviousValue(-currentNumber);
           break;
-        case currentSign === "x":
+        case "x":
           setResult(result - previousValue + previousValue * currentNumber);
           setPreviousValue(previousValue * currentNumber);
           break;
-        case currentSign === "÷":
+        case "÷":
           setResult(result - previousValue + previousValue / currentNumber);
           setPreviousValue(previousValue / currentNumber);
           break;
