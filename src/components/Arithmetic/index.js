@@ -1,6 +1,10 @@
 import React from "react";
 
 export default function Arithmetic(props) {
+  function handleClick(val) {
+    props.buildCalculationString(val, "sign");
+  }
+
   function createSigns() {
     const signsList = [];
     const signs = ["÷", "x", "-", "+"];
@@ -9,8 +13,9 @@ export default function Arithmetic(props) {
     for (let i = 0; i < signs.length; i++) {
       signsList.push(
         <li
+          onClick={() => handleClick(signs[i])}
           style={{
-            backgroundColor: "#bbbbbb",
+            backgroundColor: "#a6b1e1",
             gridColumn: "4 / 5",
             gridRow: `${rows[i]}`,
           }}

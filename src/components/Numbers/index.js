@@ -1,7 +1,10 @@
 import React from "react";
-import "./Numbers.css";
 
 export default function Numbers(props) {
+  function handleClick(val) {
+    props.buildCalculationString(val, "number");
+  }
+
   function createNumbers() {
     const numbersList = [];
     const columns = ["1 / 2", "2 / 3", "3 / 4"];
@@ -10,8 +13,8 @@ export default function Numbers(props) {
     for (let i = 0; i < 10; i++) {
       numbersList.push(
         <li
+          onClick={() => handleClick(i)}
           style={{
-            backgroundColor: "#eeeeee",
             gridColumn: `${columns[i % 3]}`,
             gridRow: `${rows[Math.floor(i / 3)]}`,
           }}
@@ -27,8 +30,8 @@ export default function Numbers(props) {
     <>
       {createNumbers()}
       <li
+        onClick={() => handleClick("()")}
         style={{
-          backgroundColor: "#eeeeee",
           gridColumn: "2 / 3",
           gridRow: "5 / 6",
         }}
@@ -36,8 +39,8 @@ export default function Numbers(props) {
         ( )
       </li>
       <li
+        onClick={() => handleClick(".")}
         style={{
-          backgroundColor: "#eeeeee",
           gridColumn: "3 / 4",
           gridRow: " 5 / 6",
         }}

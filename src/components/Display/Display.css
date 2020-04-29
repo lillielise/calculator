@@ -11,13 +11,17 @@
   align-items: center;
   justify-content: center;
   position: relative;
+  border-radius: 5px;
+  overflow-y: scroll;
 }
 
 .display-container #calculation-display {
+  margin-top: 40px;
   font-size: 25px;
-  overflow: scroll;
+  height: 100%;
 }
 
 .display-container #result-display {
   align-self: flex-end;
+  padding: 10px;
 }
