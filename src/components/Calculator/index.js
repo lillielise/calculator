@@ -1,4 +1,7 @@
-import React, { useState } from "react";
+/* eslint-disable no-fallthrough */
+import React, {
+  useState
+} from "react";
 import "./Calculator.css";
 import Arithmetic from "../Arithmetic";
 import Numbers from "../Numbers";
@@ -11,48 +14,60 @@ function Calculator() {
   const [currentSign, setCurrentSign] = useState("+");
   const [currentValue, setCurrentValue] = useState("");
   const [previousValue, setPreviousValue] = useState(0);
-  let currentNumber;
+  const [dividendOrMultiplier, setDividendOrMultiplier] = useState(1);
+  let currentValueFloat;
+  let previousSubAddCalc;
+  let length;
 
-  function signIsValid() {
-    return !(
-      calculationDisplay.length === 0 ||
-      calculationDisplay[calculationDisplay.length - 1] === " "
+  function prevIsNotEmptyOrSign() {
+    return (
+      calculationDisplay.length !== 0 &&
+      calculationDisplay[calculationDisplay.length - 1] !== " "
     );
   }
 
+  function multiply(x, y) { return x * y }
+
+  function divide(x, y) { return x / y }
+
   function buildCalculationString(val, type) {
+
     if (type === "sign") {
-      if (signIsValid()) {
+      if (prevIsNotEmptyOrSign()) {
         setCalculationDisplay(`${calculationDisplay} ${val} `);
         setCurrentSign(val);
         setCurrentValue("");
       }
     }
 
-    if (type === "number") {
+    if (type === "number" || (type === "decimal" && prevIsNotEmptyOrSign())) {
       setCalculationDisplay(calculationDisplay + val);
       setCurrentValue(currentValue + val);
-      currentNumber = parseInt(currentValue + val);
+      previousSubAddCalc = currentValue ? parseFloat(currentValue) : 0;
+      currentValueFloat = parseFloat(currentValue + val);
+      length = currentValueFloat.toString().length;
 
+      let modifier = 1;
       switch (currentSign) {
-        case "+":
-          setResult(result - currentValue + currentNumber);
-          setPreviousValue(currentNumber);
-          break;
         case "-":
-          setResult(result - currentValue - currentNumber);
-          setPreviousValue(-currentNumber);
+          modifier = -1;
+        case "+":
+          setResult(result - modifier * previousSubAddCalc + modifier * currentValueFloat);
+          setPreviousValue(modifier * currentValueFloat);
           break;
         case "x":
-          setResult(result - previousValue + previousValue * currentNumber);
-          setPreviousValue(previousValue * currentNumber);
-          break;
         case "÷":
-          setResult(result - previousValue + previousValue / currentNumber);
-          setPreviousValue(previousValue / currentNumber);
+          let execute = currentSign === "x" ? multiply : divide;
+          let tempDividendOrMultiplier = dividendOrMultiplier;
+          if (length === 1) {
+            tempDividendOrMultiplier = previousValue;
+            setDividendOrMultiplier(previousValue);
+          }
+          setResult(result - previousValue + execute(tempDividendOrMultiplier, currentValueFloat))
+          setPreviousValue(execute(tempDividendOrMultiplier, currentValueFloat))
           break;
         default:
-          console.log("what do you want from me");
+          console.error("value is not valid");
       }
     }
   }
@@ -66,17 +81,18 @@ function Calculator() {
       setPreviousValue("");
     }
     if (val === "=") {
-      setCalculationDisplay(result);
+      setCalculationDisplay(parseFloat(result.toFixed(5)));
       setCurrentSign("");
       setPreviousValue("");
     }
   }
 
   return (
-    <div className="Calculator">
-      <div className="calculator-container">
+    <div className="Calculator" >
+      <div className="calculator-container" >
         <Arithmetic buildCalculationString={buildCalculationString} />
-        <Display result={result} calculationDisplay={calculationDisplay} />
+        <Display result={result}
+          calculationDisplay={calculationDisplay} />
         <Numbers buildCalculationString={buildCalculationString} />
         <ClearAndEquals handlClearOrEquals={handlClearOrEquals} />
       </div>
