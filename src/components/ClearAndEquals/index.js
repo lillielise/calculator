@@ -10,10 +10,9 @@ export default function ClearAndEquals(props) {
       <li
         onClick={() => handleClick("C")}
         style={{
-          width: "80%",
           backgroundColor: "#dcd6f7",
-          gridColumn: "1 / 3",
-          gridRow: "6 / 7",
+          gridColumn: "3 / 4",
+          gridRow: "5 / 6",
         }}
       >
         C
@@ -21,9 +20,9 @@ export default function ClearAndEquals(props) {
       <li
         onClick={() => handleClick("=")}
         style={{
-          width: "80%",
+          width: "90%",
           backgroundColor: "#dcd6f7",
-          gridColumn: "3 / 5",
+          gridColumn: "1 / 6",
           gridRow: "6 / 7",
         }}
       >
